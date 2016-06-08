@@ -1,0 +1,44 @@
+//题目中所求的是最大的FontSize(记为S)，其应该满足P*[W/S]*[H/S] >= Sum,其中Sum是字符的总数。
+//但是我们也要注意，段与段之间不能在同一行，所以根据上面公式求出来的S不一定满足条件，还要对其进行检验。
+
+#include <iostream>
+#include <cmath>
+using namespace std;
+int n[1000];
+bool check(int s,int P,int N,int H,int W){
+    int wc=H/s;
+    int lc=W/s;
+    int page;
+    int line=0;
+    for(int i=0;i<N;i++){
+        line+=n[i]/lc;
+        if(n[i]%lc!=0)
+            line++;
+    }
+    page=line/wc;
+    if(line%wc!=0)
+        page++;
+    return page<=P;
+}
+int main(){
+    int num;
+    int s;
+    cin>>num;
+    while(num--){
+        int N,P,W,H;
+        int sum=0;
+        cin>>N>>P>>W>>H;
+        for(int i=0;i<N;i++){
+            cin>>n[i];
+        }
+        for(int j=0;j<N;j++){
+            sum+=n[j];
+        }
+        s=(int)(sqrt(P*H*W/sum));
+        while(!check(s,P,N,H,W)){
+            s--;
+        }
+        cout<<s<<endl;
+    }
+    return 0;
+}
