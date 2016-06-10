@@ -1,0 +1,54 @@
+#include <iostream>
+#include <string>
+#include <cmath>
+using namespace std;
+void sort_(int &r1, int &r2, int &r3)          //提前将x,y,z和差值进行排序就可以一次进行判断而不需要讨论了。
+{
+	if (r1 > r2)swap(r1, r2);
+	if (r1 > r3)swap(r1, r3);
+	if (r2 > r3)swap(r2, r3);
+}
+int max(int x, int y, int z, string box)
+{
+	sort_(x, y, z); // to set x < y < z
+	int red=0, blue=0, yellow=0;
+	int r1, r2, r3;
+	int max = 0;
+	int first = -1;
+	for (int i = 0; i < box.size(); i++)
+	{
+		switch (box[i])
+		{
+		case 'R':
+			red++; break;
+		case 'Y':
+			yellow++; break;
+		case 'B':
+			blue++; break;
+		default:
+			break;
+		}
+		r1 = abs(red - blue);
+        r2 = abs(red - yellow);
+		r3 = abs(blue - yellow);
+		sort_(r1, r2, r3);
+		if (r1 == x && r2 == y && r3 == z)
+		{
+			max = (i - first > max) ? (i - first) : max;          //使用的是下标的差值来计算个数的，有的同学使用的是三个球颜色之和也很好。
+			first = i;
+			red = 0;
+			blue = 0;
+			yellow = 0;
+		}
+	}
+	return (max > box.size()-1 - first) ? (max) : (box.size()-1 - first);   //和剩下的进行比较
+}
+int main()
+{
+	int x, y, z;
+	cin >> x >> y >> z;
+	string ball;
+	cin >> ball;
+	cout <<max(x, y, z, ball) << endl;
+	return 0;
+}
