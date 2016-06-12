@@ -25,7 +25,7 @@ void replace(string s){
 }
 int main(){
     string str;
-    while(getline(cin,str)){//
+    while(getline(cin,str)){//读一行
         replace(str);
     }
 }
